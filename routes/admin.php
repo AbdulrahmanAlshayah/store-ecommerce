@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //note that the prefix is admin for all fill route
-Route::group(['namespace' => 'Dashboard','middleware' => 'auth:admin'],function (){
-    Route::get('users',function (){
-        return "in admin";
-    })->name('admin.dashboard');
+Route::group(['namespace' => 'Dashboard','middleware' => 'auth:admin'],function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard'); // the first page admin visits if authenticated
 });
 
-Route::group(['namespace' => 'Dashboard'],function (){
+Route::group(['namespace' => 'Dashboard','middleware' => 'guest:admin'],function (){
     Route::get('login',[LoginController::class,'login'])->name('admin.login');
     Route::post('login',[LoginController::class,'postLogin'])->name('admin.post.login');
 
