@@ -13,3 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['namespace' => 'Dashboard','middleware' => 'auth:admin'],function (){
+    Route::get('users',function (){
+        return "in admin";
+    });
+});
+
+Route::group(['namespace' => 'Dashboard'],function (){
+    Route::get('login',function (){
+        return "please login";
+    })->name('admin.login');
+});

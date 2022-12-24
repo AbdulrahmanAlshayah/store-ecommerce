@@ -64,13 +64,13 @@
 <body class="vertical-layout vertical-menu 2-columns menu-expanded fixed-navbar"
       data-open="click" data-menu="vertical-menu" data-col="2-columns">
 <!-- fixed-top-->
-@include('admin.includes.header')
+@include('dashboard.includes.header')
 <!-- ////////////////////////////////////////////////////////////////////////////-->
-@include('admin.includes.sidebar')
+@include('dashboard.includes.sidebar')
 
 @yield('content')
 <!-- ////////////////////////////////////////////////////////////////////////////-->
-@include('admin.includes.footer')
+@include('dashboard.includes.footer')
 
 @notify_js
 @notify_render
