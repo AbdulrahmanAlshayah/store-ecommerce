@@ -27,6 +27,8 @@ Route::group([
 
     Route::group(['prefix' => 'admin','middleware' => 'auth:admin'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard'); // the first page admin visits if authenticated
+        Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
         Route::group(['prefix' => 'settings'], function () {
             Route::get('shipping-methods/{type}', [Settingscontroller::class, 'editShippingMethods'])->name('edit.shippings.methods');
             Route::put('shipping-methods/{id}', [Settingscontroller::class, 'updateShippingMethods'])->name('update.shippings.methods');
