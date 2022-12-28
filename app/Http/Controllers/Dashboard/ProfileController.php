@@ -22,24 +22,27 @@ class ProfileController extends Controller
         //validate
         //db
 
+        try {
+            $admin = Admin::find(auth('admin')->user()->id);
 
-        $admin = Admin::find(auth('admin')->user()->id);
 
+            if ($request->filled('password')) {
+                unset($request['id']);
+                unset($request['password_confirmation']);
 
-        if ($request->filled('password')) {
+                $request->merge(['password' => bcrypt($request->password)]);
+                $admin->update($request->all());
+                return redirect()->back()->with(['success' => 'تم التحديث بنجاح']);
+            }
+
             unset($request['id']);
-            unset($request['password_confirmation']);
 
-            $request->merge(['password' => bcrypt($request->password)]);
-            $admin->update($request->all());
+            $admin->update(['name' => $request->name, 'email' => $request->email]);
+
             return redirect()->back()->with(['success' => 'تم التحديث بنجاح']);
+        } catch (\Exception $ex) {
+            return redirect()->back()->with(['error' => 'هناك خطا ما يرجي المحاولة فيما بعد']);
+
         }
-
-        unset($request['id']);
-
-        $admin->update(['name' => $request->name, 'email' => $request->email]);
-
-        return redirect()->back()->with(['success' => 'تم التحديث بنجاح']);
-
     }
 }
