@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\LoginController;
+use App\Http\Controllers\Dashboard\MainCategoriesController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
 
-    Route::group(['prefix' => 'admin','middleware' => 'auth:admin'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard'); // the first page admin visits if authenticated
         Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
@@ -39,9 +40,21 @@ Route::group([
             Route::get('edit', [ProfileController::class, 'editProfile'])->name('edit.profile');
             Route::put('update', [ProfileController::class, 'updateProfile'])->name('update.profile');
         });
+
+        ################################## categories routes ######################################
+        Route::group(['prefix' => 'main_categories'], function () {
+            Route::get('/', [MainCategoriesController::class, 'index'])->name('admin.maincategories');
+            Route::get('create', [MainCategoriesController::class, 'create'])->name('admin.maincategories.create');
+            Route::post('store', [MainCategoriesController::class, 'store'])->name('admin.maincategories.store');
+            Route::get('edit/{id}', [MainCategoriesController::class, 'edit'])->name('admin.maincategories.edit');
+            Route::post('update/{id}', [MainCategoriesController::class, 'update'])->name('admin.maincategories.update');
+            Route::get('delete/{id}', [MainCategoriesController::class, 'destroy'])->name('admin.maincategories.delete');
+        });
+
+        ################################## end categories    #######################################
     });
 
-    Route::group(['prefix' => 'admin','middleware' => 'guest:admin'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
         Route::get('login', [LoginController::class, 'login'])->name('admin.login');
         Route::post('login', [LoginController::class, 'postLogin'])->name('admin.post.login');
 
