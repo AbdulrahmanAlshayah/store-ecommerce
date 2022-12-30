@@ -17,6 +17,7 @@ Route::get('test',function (){
     $category = \App\Models\Category::first();
 
     $category -> makeVisible(['translations']);
-
-    return $category;
+    $parent_id =  \App\Models\Category::select('id')->whereNull('parent_id')->inRandomOrder()->first();
+    $parent_id->makeHidden('name');
+    return $parent_id;
 });
