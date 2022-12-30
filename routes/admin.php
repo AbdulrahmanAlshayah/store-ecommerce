@@ -52,6 +52,7 @@ Route::group([
         });
 
         ################################## end categories    #######################################
+
     });
 
     Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {

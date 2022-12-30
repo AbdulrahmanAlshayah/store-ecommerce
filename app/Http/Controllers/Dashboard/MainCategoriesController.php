@@ -25,11 +25,23 @@ class MainCategoriesController extends Controller
 
     public function store(MainCategoryRequest $request)
     {
-         try {
+        try {
 
             DB::beginTransaction();
 
             //validation
+            if (!$request->has('is_active'))
+                $request->request->add(['is_active' => 0]);
+            else
+                $request->request->add(['is_active' => 1]);
+
+            $category = Category::create($request->except('_token'));
+
+            //save translations
+            $category->name = $request->name;
+            $category->save();
+
+            return redirect()->route('admin.maincategories')->with(['success' => 'تم ألاضافة بنجاح']);
 
             DB::commit();
 
