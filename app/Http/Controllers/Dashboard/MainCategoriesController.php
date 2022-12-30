@@ -11,19 +11,32 @@ use DB;
 class MainCategoriesController extends Controller
 {
 
-       public function index()
+    public function index()
     {
         $categories = Category::parent()->paginate(PAGINATION_COUNT);
-        return view('dashboard.categories.index',compact('categories'));
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     public function create()
     {
+        $categories = Category::select('id', 'parent_id')->get();
+        return view('dashboard.categories.create', compact('categories'));
     }
 
     public function store(MainCategoryRequest $request)
     {
+         try {
 
+            DB::beginTransaction();
+
+            //validation
+
+            DB::commit();
+
+        } catch (\Exception $ex) {
+            DB::rollback();
+
+        }
 
 
     }
@@ -79,7 +92,20 @@ class MainCategoriesController extends Controller
 
     public function destroy($id)
     {
+        try {
+            //get specific categories and its translations
+            $category = Category::orderBy('id', 'DESC')->find($id);
 
+            if (!$category)
+                return redirect()->route('admin.maincategories')->with(['error' => 'هذا القسم غير موجود ']);
+
+            $category->delete();
+
+            return redirect()->route('admin.maincategories')->with(['success' => 'تم  الحذف بنجاح']);
+
+        } catch (\Exception $ex) {
+            return redirect()->route('admin.maincategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+        }
 
     }
 
