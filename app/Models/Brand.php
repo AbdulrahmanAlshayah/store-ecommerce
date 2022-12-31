@@ -6,7 +6,7 @@ use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Brand extends Model
 {
     use HasFactory;
     use Translatable;
@@ -18,22 +18,12 @@ class Category extends Model
      */
     protected $with = ['translations'];
 
-
-    protected $translatedAttributes = ['name'];
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['parent_id', 'slug', 'is_active'];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = ['translations'];
+    protected $fillable = ['is_active', 'photo'];
 
     /**
      * The attributes that should be cast to native types.
@@ -44,22 +34,20 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
-    public function scopeParent($query)
-    {
-        return $query->whereNull('parent_id');
-    }
-
-    public function scopeChild($query)
-    {
-        return $query->whereNotNull('parent_id');
-    }
+    /**
+     * The attributes that are translatable.
+     *
+     * @var array
+     */
+    public $translatedAttributes = ['name'];
 
     public function getActive()
     {
         return $this->is_active == 0 ? 'غير مفعل' : 'مفعل';
     }
 
-    public function _parent(){
-        return $this->belongsTo(self::class, 'parent_id');
+    public function getPhotoAttribute($val)
+    {
+        return ($val !== null) ? asset('assets/images/brands/' . $val) : "";
     }
 }
