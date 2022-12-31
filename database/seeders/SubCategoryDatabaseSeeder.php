@@ -14,7 +14,7 @@ class SubCategoryDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        SubCategory::factory(10)->create();
+        Category::factory(10)->create();
 
 //        Category::factory(10)->create([
 //            'parent_id' => $this->getRandomParentId()

@@ -56,6 +56,6 @@ class Category extends Model
 
     public function getActive()
     {
-        return $this->is_active == 0 ? 'غير مفعل' : 'مفعل' ;
+        return $this->is_active == 0 ? 'غير مفعل' : 'مفعل';
     }
 }
