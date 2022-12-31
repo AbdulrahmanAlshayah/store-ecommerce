@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\LoginController;
 use App\Http\Controllers\Dashboard\MainCategoriesController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\SubCategoriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,12 +56,12 @@ Route::group([
 
         ################################## sub categories routes ######################################
         Route::group(['prefix' => 'sub_categories'], function () {
-            Route::get('/', 'SubCategoriesController@index')->name('admin.subcategories');
-            Route::get('create', 'SubCategoriesController@create')->name('admin.subcategories.create');
-            Route::post('store', 'SubCategoriesController@store')->name('admin.subcategories.store');
-            Route::get('edit/{id}', 'SubCategoriesController@edit')->name('admin.subcategories.edit');
-            Route::post('update/{id}', 'SubCategoriesController@update')->name('admin.subcategories.update');
-            Route::get('delete/{id}', 'SubCategoriesController@destroy')->name('admin.subcategories.delete');
+            Route::get('/',[SubCategoriesController::class, 'index'])->name('admin.subcategories');
+            Route::get('create',[SubCategoriesController::class, 'create'])->name('admin.subcategories.create');
+            Route::post('store',[SubCategoriesController::class, 'store'])->name('admin.subcategories.store');
+            Route::get('edit/{id}',[SubCategoriesController::class, 'edit'])->name('admin.subcategories.edit');
+            Route::post('update/{id}',[SubCategoriesController::class, 'update'])->name('admin.subcategories.update');
+            Route::get('delete/{id}',[SubCategoriesController::class, 'destroy'])->name('admin.subcategories.delete');
         });
 
         ################################## end categories    #######################################

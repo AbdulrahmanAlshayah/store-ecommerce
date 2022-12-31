@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MainCategoryRequest;
+use App\Http\Requests\SubCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use DB;
@@ -19,11 +20,11 @@ class SubCategoriesController extends Controller
 
     public function create()
     {
-        $categories = Category::select('id', 'parent_id')->get();
-        return view('dashboard.categories.create', compact('categories'));
+        $categories = Category::parent()->orderBy('id', 'DESC')->get();
+        return view('dashboard.subcategories.create', compact('categories'));
     }
 
-    public function store(MainCategoryRequest $request)
+    public function store(SubCategoryRequest $request)
     {
         try {
 
@@ -41,7 +42,7 @@ class SubCategoriesController extends Controller
             $category->name = $request->name;
             $category->save();
 
-            return redirect()->route('admin.maincategories')->with(['success' => 'تم ألاضافة بنجاح']);
+            return redirect()->route('admin.subcategories')->with(['success' => 'تم ألاضافة بنجاح']);
 
             DB::commit();
 
@@ -61,14 +62,16 @@ class SubCategoriesController extends Controller
         $category = Category::orderBy('id', 'DESC')->find($id);
 
         if (!$category)
-            return redirect()->route('admin.maincategories')->with(['error' => 'هذا القسم غير موجود ']);
+            return redirect()->route('admin.subcategories')->with(['error' => 'هذا القسم غير موجود ']);
 
-        return view('dashboard.categories.edit', compact('category'));
+        $categories = Category::parent()->orderBy('id', 'DESC')->get();
+
+        return view('dashboard.subcategories.edit', compact('category','categories'));
 
     }
 
 
-    public function update($id, MainCategoryRequest $request)
+    public function update($id, SubCategoryRequest $request)
     {
         try {
             //validation
@@ -79,7 +82,7 @@ class SubCategoriesController extends Controller
             $category = Category::find($id);
 
             if (!$category)
-                return redirect()->route('admin.maincategories')->with(['error' => 'هذا القسم غير موجود']);
+                return redirect()->route('admin.subcategories')->with(['error' => 'هذا القسم غير موجود']);
 
             if (!$request->has('is_active'))
                 $request->request->add(['is_active' => 0]);
@@ -92,10 +95,10 @@ class SubCategoriesController extends Controller
             $category->name = $request->name;
             $category->save();
 
-            return redirect()->route('admin.maincategories')->with(['success' => 'تم ألتحديث بنجاح']);
+            return redirect()->route('admin.subcategories')->with(['success' => 'تم ألتحديث بنجاح']);
         } catch (\Exception $ex) {
 
-            return redirect()->route('admin.maincategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+            return redirect()->route('admin.subcategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
         }
 
 
@@ -109,14 +112,14 @@ class SubCategoriesController extends Controller
             $category = Category::orderBy('id', 'DESC')->find($id);
 
             if (!$category)
-                return redirect()->route('admin.maincategories')->with(['error' => 'هذا القسم غير موجود ']);
+                return redirect()->route('admin.subcategories')->with(['error' => 'هذا القسم غير موجود ']);
 
             $category->delete();
 
-            return redirect()->route('admin.maincategories')->with(['success' => 'تم  الحذف بنجاح']);
+            return redirect()->route('admin.subcategories')->with(['success' => 'تم  الحذف بنجاح']);
 
         } catch (\Exception $ex) {
-            return redirect()->route('admin.maincategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+            return redirect()->route('admin.subcategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
         }
 
     }
