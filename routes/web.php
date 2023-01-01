@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('test',function (){
-    $category = \App\Models\Category::first();
+    $categories = \App\Models\CategoryTranslation::first();
 
-    $category -> makeVisible(['translations']);
-    $parent_id =  \App\Models\Category::select('id')->whereNull('parent_id')->inRandomOrder()->first();
-    $parent_id->makeHidden('name');
-    return $parent_id;
+    return $categories;
 });

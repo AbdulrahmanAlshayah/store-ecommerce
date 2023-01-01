@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
-        public function index()
+    public function index()
     {
         $brands = Brand::orderBy('id', 'DESC')->paginate(PAGINATION_COUNT);
         return view('dashboard.brands.index', compact('brands'));
@@ -52,7 +53,6 @@ class BrandController extends Controller
         return redirect()->route('admin.brands')->with(['success' => 'تم ألاضافة بنجاح']);
 
 
-
     }
 
 
@@ -79,13 +79,13 @@ class BrandController extends Controller
 
 
             $brand = Brand::find($id);
-
             if (!$brand)
                 return redirect()->route('admin.brands')->with(['error' => 'هذا الماركة غير موجود']);
 
 
             DB::beginTransaction();
             if ($request->has('photo')) {
+                unlink($brand->photo);
                 $fileName = uploadImage('brands', $request->photo);
                 Brand::where('id', $id)
                     ->update([

@@ -60,6 +60,15 @@ class Category extends Model
     }
 
     public function _parent(){
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');//->withDefault('--');
     }
+
+    public function subcategory(){
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+    public function subsubcategory(){
+        return $this->subcategory();
+    }
+
 }
