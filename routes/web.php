@@ -13,3 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('test',function (){
+    $categories = \App\Models\CategoryTranslation::first();
+
+    return $categories;
+});

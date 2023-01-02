@@ -44,4 +44,31 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
+    public function scopeParent($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
+    public function scopeChild($query)
+    {
+        return $query->whereNotNull('parent_id');
+    }
+
+    public function getActive()
+    {
+        return $this->is_active == 0 ? 'غير مفعل' : 'مفعل';
+    }
+
+    public function _parent(){
+        return $this->belongsTo(self::class, 'parent_id');//->withDefault('--');
+    }
+    public function scopeActive($query){
+        return $query -> where('is_active',1) ;
+    }
+    public function subcategory(){
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+
+
 }
