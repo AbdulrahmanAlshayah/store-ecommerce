@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\AttributesController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\LoginController;
@@ -111,6 +112,18 @@ Route::group([
         });
 
         ################################## end products    #######################################
+
+        ################################## attrributes routes ######################################
+        Route::group(['prefix' => 'attributes'], function () {
+            Route::get('/', [AttributesController::class,'index'])->name('admin.attributes');
+            Route::get('create', [AttributesController::class,'create'])->name('admin.attributes.create');
+            Route::post('store', [AttributesController::class,'store'])->name('admin.attributes.store');
+            Route::get('delete/{id}', [AttributesController::class,'destroy'])->name('admin.attributes.delete');
+            Route::get('edit/{id}', [AttributesController::class,'edit'])->name('admin.attributes.edit');
+            Route::post('update/{id}', [AttributesController::class,'update'])->name('admin.attributes.update');
+        });
+        ################################## end attributes    #######################################
+
     });
 
 

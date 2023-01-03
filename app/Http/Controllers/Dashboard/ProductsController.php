@@ -139,6 +139,9 @@ class ProductsController extends Controller
             if ($request->has('document') && count($request->document) > 0) {
                 foreach ($request->document as $image) {
                     Image::create([
+//                        'imageabel_id' => $event->id,
+//                        'imageable_type' => $request->'App\Models\Event',
+
                         'product_id' => $request->product_id,
                         'photo' => $image,
                     ]);
