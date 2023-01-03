@@ -98,7 +98,11 @@ Route::group([
             Route::get('/', [ProductsController::class,'index'])->name('admin.products');
             Route::get('general-information', [ProductsController::class,'create'])->name('admin.products.general.create');
             Route::post('store-general-information', [ProductsController::class,'store'])->name('admin.products.general.store');
-        });
+
+            Route::get('price/{id}', [ProductsController::class,'getPrice'])->name('admin.products.price');
+            Route::post('price', [ProductsController::class,'saveProductPrice'])->name('admin.products.price.store');
+
+ });
 
         ################################## end products    #######################################
     });

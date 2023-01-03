@@ -14,8 +14,8 @@ class MainCategoriesController extends Controller
 
     public function index()
     {
-        $categories = Category::with('_parent')->orderBy('id','DESC') -> paginate(PAGINATION_COUNT);
-        return view('dashboard.categories.index', compact('categories'));
+        $products = Product::select('id','slug','price', 'created_at')->paginate(PAGINATION_COUNT);
+        return view('dashboard.products.general.index', compact('products'));
     }
 
     public function create()

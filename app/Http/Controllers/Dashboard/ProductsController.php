@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Enumerations\CategoryType;
 use App\Http\Requests\GeneralProductRequest;
 use App\Http\Requests\MainCategoryRequest;
+use App\Http\Requests\ProductPriceValidation;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -33,32 +34,60 @@ class ProductsController extends Controller
 
     public function store(GeneralProductRequest $request)
     {
+        try {
+            DB::beginTransaction();
 
+            //validation
 
-        DB::beginTransaction();
+            if (!$request->has('is_active'))
+                $request->request->add(['is_active' => 0]);
+            else
+                $request->request->add(['is_active' => 1]);
 
-        //validation
+            $product = Product::create([
+                'slug' => $request->slug,
+                'brand_id' => $request->brand_id,
+                'is_active' => $request->is_active,
+            ]);
+            //save translations
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->save();
 
-        if (!$request->has('is_active'))
-            $request->request->add(['is_active' => 0]);
-        else
-            $request->request->add(['is_active' => 1]);
+            //save product categories
 
-        $product = Product::create([
-            'slug' => $request->slug,
-            'brand_id' => $request->brand_id,
-            'is_active' => $request->is_active,
-        ]);
+            $product->categories()->attach($request->categories);
 
+            //save product tags
 
-        //save product tags
+            DB::commit();
+            return redirect()->route('admin.products')->with(['success' => 'تم ألاضافة بنجاح']);
 
-        DB::commit();
-        return redirect()->route('admin.products')->with(['success' => 'تم ألاضافة بنجاح']);
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return redirect()->route('admin.maincategories')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+        }
 
 
     }
 
+    public function getPrice($product_id){
+
+        return view('dashboard.products.prices.create') ->withId($product_id);
+    }
+
+    public function saveProductPrice(ProductPriceValidation $request){
+
+        try{
+
+            Product::whereId($request -> product_id) -> update($request -> only(['price','special_price','special_price_type','special_price_start','special_price_end']));
+
+            return redirect()->route('admin.products')->with(['success' => 'تم التحديث بنجاح']);
+        }catch(\Exception $ex){
+
+        }
+    }
 
 
 }
