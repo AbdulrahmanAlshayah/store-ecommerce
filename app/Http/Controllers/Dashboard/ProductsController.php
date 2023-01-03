@@ -7,6 +7,7 @@ use App\Http\Enumerations\CategoryType;
 use App\Http\Requests\GeneralProductRequest;
 use App\Http\Requests\MainCategoryRequest;
 use App\Http\Requests\ProductPriceValidation;
+use App\Http\Requests\ProductStockRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -72,22 +73,41 @@ class ProductsController extends Controller
 
     }
 
-    public function getPrice($product_id){
+    public function getPrice($product_id)
+    {
 
-        return view('dashboard.products.prices.create') ->withId($product_id);
+        return view('dashboard.products.prices.create')->withId($product_id);
     }
 
-    public function saveProductPrice(ProductPriceValidation $request){
+    public function saveProductPrice(ProductPriceValidation $request)
+    {
 
-        try{
+        try {
 
-            Product::whereId($request -> product_id) -> update($request -> only(['price','special_price','special_price_type','special_price_start','special_price_end']));
+            Product::whereId($request->product_id)->update($request->only(['price', 'special_price', 'special_price_type', 'special_price_start', 'special_price_end']));
 
             return redirect()->route('admin.products')->with(['success' => 'تم التحديث بنجاح']);
-        }catch(\Exception $ex){
+        } catch (\Exception $ex) {
 
         }
     }
 
+    public function getStock($product_id)
+    {
+
+        return view('dashboard.products.stock.create')->with('id', $product_id);
+    }
+
+    public function saveProductStock(ProductStockRequest $request)
+    {
+        try {
+
+            Product::whereId($request->product_id)->update($request->except(['_token', 'product_id']));
+
+            return redirect()->route('admin.products')->with(['success' => 'تم التحديث بنجاح']);
+        } catch (\Exception $ex) {
+
+        }
+    }
 
 }

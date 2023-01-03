@@ -95,14 +95,17 @@ Route::group([
 
         ################################## products routes ######################################
         Route::group(['prefix' => 'products'], function () {
-            Route::get('/', [ProductsController::class,'index'])->name('admin.products');
-            Route::get('general-information', [ProductsController::class,'create'])->name('admin.products.general.create');
-            Route::post('store-general-information', [ProductsController::class,'store'])->name('admin.products.general.store');
+            Route::get('/', [ProductsController::class, 'index'])->name('admin.products');
+            Route::get('general-information', [ProductsController::class, 'create'])->name('admin.products.general.create');
+            Route::post('store-general-information', [ProductsController::class, 'store'])->name('admin.products.general.store');
 
-            Route::get('price/{id}', [ProductsController::class,'getPrice'])->name('admin.products.price');
-            Route::post('price', [ProductsController::class,'saveProductPrice'])->name('admin.products.price.store');
+            Route::get('price/{id}', [ProductsController::class, 'getPrice'])->name('admin.products.price');
+            Route::post('price', [ProductsController::class, 'saveProductPrice'])->name('admin.products.price.store');
 
- });
+            Route::get('stock/{id}',[ProductsController::class,'getStock'])->name('admin.products.stock');
+            Route::post('stock', [ProductsController::class,'saveProductStock'])->name('admin.products.stock.store');
+
+        });
 
         ################################## end products    #######################################
     });
