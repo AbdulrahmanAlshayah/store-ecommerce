@@ -101,6 +101,11 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'product_categories');
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'product_tags');
