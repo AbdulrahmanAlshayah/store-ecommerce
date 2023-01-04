@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Rule;
 class UniqueAttributeName implements Rule
 {
 
+
     private $attributeName;
     private $attributeId;
 
