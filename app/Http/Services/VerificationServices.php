@@ -22,4 +22,10 @@ class VerificationServices
         return User_verfication::create($data);
     }
 
+    public function getSMSVerifyMessageByAppName( $code)
+    {
+            $message = " is your verification code for your account";
+             return $code.$message;
+    }
+
 }
