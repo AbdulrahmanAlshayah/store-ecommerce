@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Site\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,11 +24,27 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['namespace' => 'Site', 'middleware' => ['auth', 'VerifiedUser']], function () {
+        // must be authenticated user and verified
+
+        Route::get('profile', function () {
+            return 'You Are Authenticated ';
+        });
+    });
+
+
+    Route::group(['namespace' => 'Site', 'middleware' => 'auth'], function () {
+        // must be authenticated user
+        Route::post('verify-user/', [VerificationCodeController::class,'verify'])->name('verify-user');
 
     });
 
     Route::group(['middleware' => 'guest'], function () {
 
     });
+
+    Route::get('verify', function () {
+        return view('auth.verification');
+    });
 });
+

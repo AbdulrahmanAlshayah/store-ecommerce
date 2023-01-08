@@ -28,4 +28,20 @@ class VerificationServices
              return $code.$message;
     }
 
+     public function checkOTPCode ($code){
+
+        if (Auth::guard()->check()) {
+            $verificationData = User_verfication::where('user_id',Auth::id()) -> first();
+
+            if($verificationData -> code == $code){
+                User::whereId(Auth::id()) -> update(['email_verified_at' => now()]);
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false ;
+    }
+
+
 }

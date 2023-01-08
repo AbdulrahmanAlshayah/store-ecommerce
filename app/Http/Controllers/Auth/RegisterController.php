@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class RegisterController extends Controller
 {
@@ -90,9 +91,11 @@ class RegisterController extends Controller
             //save this code in verifcation table
             //done
             //send code to user mobile by sms gateway   // note  there are no gateway credentails in config file
-              #app(VictoryLinkSms::class) -> sendSms($user -> mobile,$message);
+              #
+            #app(VictoryLinkSms::class) -> sendSms($user -> mobile,$message);
             DB::commit();
             //send to user  mobile
+            return $user;
         } catch (\Exception $ex) {
             DB::rollback();
         }
