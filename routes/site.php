@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +21,10 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
 
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/', [HomeController::class, 'home'])->name('home')->middleware('VerifiedUser');
+    });
 
-    Route::get('/', function () {
-        return view('front.home');
-    })->name('home') -> middleware('VerifiedUser');
 
     Route::group(['namespace' => 'Site', 'middleware' => ['auth', 'VerifiedUser']], function () {
         // must be authenticated user and verified
@@ -40,9 +41,6 @@ Route::group([
         Route::get('verify', [VerificationCodeController::class, 'getVerifyPage'])->name('get.verification.form');
     });
 
-    Route::group(['middleware' => 'guest'], function () {
-
-    });
 
 });
 

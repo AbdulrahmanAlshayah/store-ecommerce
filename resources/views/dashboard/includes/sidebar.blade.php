@@ -12,9 +12,9 @@
                     <span
                         class="badge badge badge-info badge-pill float-right mr-2"></span>
                 </a>
-                <ul class="menu-content " >
+                <ul class="menu-content ">
                     <li class=""><a class="menu-item" href=""
-                                          data-i18n="nav.dash.ecommerce"> عرض الكل </a>
+                                    data-i18n="nav.dash.ecommerce"> عرض الكل </a>
                     </li>
                     <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
                             لغة جديده </a>
@@ -179,6 +179,16 @@
                     </li>
                 </ul>
             </li>
+
+            <li><a class="menu-item" href="#"
+                   data-i18n="nav.templates.vert.main"> {{__('admin/sidebar.main slider')}} </a>
+                <ul class="menu-content">
+                    <li><a class="menu-item" href="{{route('admin.sliders.create')}}"
+                           data-i18n="nav.templates.vert.classic_menu">صور الاسليدر </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class=" navigation-header">
                 <span data-i18n="nav.category.layouts">Layouts</span><i class="la la-ellipsis-h ft-minus"
                                                                         data-toggle="tooltip"

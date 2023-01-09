@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\MainCategoriesController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\SliderController;
 use App\Http\Controllers\Dashboard\SubCategoriesController;
 use App\Http\Controllers\Dashboard\TagController;
 use Illuminate\Support\Facades\Route;
@@ -134,6 +135,16 @@ Route::group([
             Route::post('update/{id}', [OptionsController::class,'update'])->name('admin.options.update');
         });
         ################################## end options    #######################################
+
+
+        ################################## sliders ######################################
+        Route::group(['prefix' => 'sliders'], function () {
+            Route::get('/', [SliderController::class,'addImages'])->name('admin.sliders.create');
+            Route::post('images', [SliderController::class,'saveSliderImages'])->name('admin.sliders.images.store');
+            Route::post('images/db', [SliderController::class,'saveSliderImagesDB'])->name('admin.sliders.images.store.db');
+
+        });
+        ################################## end sliders    #######################################
 
 
     });
