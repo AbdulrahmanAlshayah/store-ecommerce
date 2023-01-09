@@ -14,15 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('front.home');
-})->name('home');
-
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function () {
+
+
+    Route::get('/', function () {
+        return view('front.home');
+    })->name('home') -> middleware('VerifiedUser');
 
     Route::group(['namespace' => 'Site', 'middleware' => ['auth', 'VerifiedUser']], function () {
         // must be authenticated user and verified
@@ -35,16 +36,13 @@ Route::group([
 
     Route::group(['namespace' => 'Site', 'middleware' => 'auth'], function () {
         // must be authenticated user
-        Route::post('verify-user/', [VerificationCodeController::class,'verify'])->name('verify-user');
-
+        Route::post('verify-user/', [VerificationCodeController::class, 'verify'])->name('verify-user');
+        Route::get('verify', [VerificationCodeController::class, 'getVerifyPage'])->name('get.verification.form');
     });
 
     Route::group(['middleware' => 'guest'], function () {
 
     });
 
-    Route::get('verify', function () {
-        return view('auth.verification');
-    });
 });
 

@@ -23,10 +23,14 @@ class VerificationCodeController extends Controller
           //  return 'you enter wrong code ';
             return 'you enter wrong code';
         }else {  // verifiction code correct
-
+            $this ->  verificationService -> removeOTPCode($request -> code);
             return redirect()->route('home');
         }
     }
 
+    public function getVerifyPage()
+    {
+        return view('auth.verification') ;
+    }
 
 }
