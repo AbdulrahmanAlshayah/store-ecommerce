@@ -15,7 +15,7 @@
                     </li>
                     <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                         <a itemprop="item" href="36-mini-speaker.html">
-                            <span itemprop="name">{{$category -> name}}</span>
+                            <span itemprop="name">Favourite List</span>
                         </a>
                         <meta itemprop="position" content="3">
                     </li>
@@ -29,7 +29,7 @@
             <div id="content-wrapper" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <section id="main">
                     <div class="block-category hidden-sm-down">
-                        <h1 class="h1">{{$category -> name}}</h1>
+                        <h1 class="h1"> favourite list</h1>
                     </div>
                     <section id="products">
 
@@ -81,8 +81,6 @@
                             </div>
 
                         </div>
-
-
                         <div id="categories-product">
                             <div id="js-product-list">
                                 <div class="products product_list grid row" data-default-view="grid">
@@ -93,7 +91,7 @@
                                                      data-id-product="22" data-id-product-attribute="408" itemscope=""
                                                      itemtype="http://schema.org/Product">
                                                     <div class="thumbnail-container">
-                                                        <a href="{{route('product.details',$product -> slug)}}"
+                                                        <a href="audio/22-408-aenean-porta-ligula-egestas-east.html#/1-size-s/10-color-red"
                                                            class="thumbnail product-thumbnail two-image">
                                                             <img class="img-fluid image-cover"
                                                                  src="{{$product -> images[0] -> photo ?? ''}}"
@@ -139,7 +137,7 @@
                                                             </div>
 
                                                             <div class="product-title" itemprop="name"><a
-                                                                    href="{{route('product.details',$product -> slug)}}">{{$product -> name}}</a></div>
+                                                                    href="">{{$product -> name}}</a></div>
 
                                                             <div class="product-group-price">
                                                                 <div class="product-price-and-shipping">
@@ -166,17 +164,15 @@
                                                                 @csrf
                                                                 <input type="hidden" name="id_product"
                                                                        value="{{$product -> id}}">
-                                                                <a class="add-to-cart cart-addition" data-product-id="{{$product -> id}}" data-product-slug="{{$product -> slug}}" href="#"
+                                                                <a class="add-to-cart" href="#"
                                                                    data-button-action="add-to-cart"><i
                                                                         class="novicon-cart"></i><span>Add to cart</span></a>
                                                             </form>
 
-
-                                                            <a class="addToWishlist  wishlistProd_22" href="#"
-                                                               data-product-id="{{$product -> id}}"
-                                                            >
+                                                            <a class="removeFromWishlist addToWishlist  wishlistProd_22" href="#"
+                                                               data-product-id="{{$product -> id}}">
                                                                 <i class="fa fa-heart"></i>
-                                                                <span>Add to Wishlist</span>
+                                                                <span>remove to Wishlist</span>
                                                             </a>
                                                             <a href="#" class="quick-view hidden-sm-down"
                                                                data-product-id="{{$product -> id}}">
@@ -228,6 +224,7 @@
     @include('front.includes.not-logged')
     @include('front.includes.alert')   <!-- we can use only one with dynamic text -->
     @include('front.includes.alert2')
+
 @stop
 
 @section('scripts')
@@ -237,10 +234,7 @@
         });
         $(document).on('click', '.close', function () {
             $('.quickview-modal-product-details-' + $(this).attr('data-product-id')).css("display", "none");
-
             $('.not-loggedin-modal').css("display", "none");
-            $('.alert-modal').css("display", "none");
-            $('.alert-modal2').css("display", "none");
         });
         $.ajaxSetup({
             headers: {
@@ -248,40 +242,22 @@
             }
         });
 
-
-        $(document).on('click', '.addToWishlist', function (e) {
+        $(document).on('click', '.removeFromWishlist', function (e) {
             e.preventDefault();
 
             @guest()
                 $('.not-loggedin-modal').css('display','block');
             @endguest
+
+
             $.ajax({
-                type: 'post',
-                url: "{{Route('wishlist.store')}}",
+                type: 'delete',
+                url: "{{Route('wishlist.destroy')}}",
                 data: {
                     'productId': $(this).attr('data-product-id'),
                 },
                 success: function (data) {
-                    if(data.wished )
-                    $('.alert-modal').css('display','block');
-                    else
-                        $('.alert-modal2').css('display','block');
-                }
-            });
-        });
-
-        $(document).on('click', '.cart-addition', function (e) {
-            e.preventDefault();
-
-            $.ajax({
-                type: 'post',
-                url: "{{Route('site.cart.add')}}",
-                data: {
-                    'product_id': $(this).attr('data-product-id'),
-                    'product_slug' : $(this).attr('data-product-slug'),
-                },
-                success: function (data) {
-
+                    location.reload();
                 }
             });
         });
