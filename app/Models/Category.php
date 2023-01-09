@@ -69,6 +69,9 @@ class Category extends Model
         return $this->hasMany(self::class, 'parent_id');
     }
 
-
+    //get all childrens=
+    public function childrens(){
+        return $this -> hasMany(Self::class,'parent_id');
+    }
 
 }
