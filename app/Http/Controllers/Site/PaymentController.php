@@ -180,6 +180,7 @@ if ($err) {
 
         $json = json_decode((string)$response, true);
         $PaymentId = $json["Data"]["PaymentId"];
+
         try {
             DB::beginTransaction();
             // if success payment save order and send realtime notification to admin
@@ -194,6 +195,7 @@ if ($err) {
             DB::rollBack();
             return $ex;
         }
+
         // replace return statment with message that tell the user that the payment successes
         return [
             'payment_success' => true,
