@@ -160,6 +160,7 @@
                                                         <div class="product-buttons d-flex justify-content-center"
                                                              itemprop="offers" itemscope=""
                                                              itemtype="http://schema.org/Offer">
+
                                                             <form
                                                                 action=""
                                                                 method="post" class="formAddToCart">
@@ -170,6 +171,7 @@
                                                                    data-button-action="add-to-cart"><i
                                                                         class="novicon-cart"></i><span>Add to cart</span></a>
                                                             </form>
+
 
 
                                                             <a class="addToWishlist  wishlistProd_22" href="#"
@@ -269,6 +271,7 @@
                 }
             });
         });
+
 
         $(document).on('click', '.cart-addition', function (e) {
             e.preventDefault();

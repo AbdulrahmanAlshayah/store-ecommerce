@@ -3,7 +3,7 @@
         <div class="row d-flex align-items-center">
             <div id="_desktop_logo"
                  class="contentsticky_logo d-flex align-items-center justify-content-start col-lg-3 col-md-3">
-{{--                <a href="{{route('home')}}">--}}
+                <a href="{{route('home')}}">
                     <img class="logo img-fluid"
                          src="http://demo.bestprestashoptheme.com/savemart/modules/novthemeconfig/images/logos/logo-1.png"
                          alt="Prestashop_Savemart">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="header_link_wishlist">
                         <a
-{{--                            href="{{route('wishlist.products.index')}}"--}}
+                            href="{{route('wishlist.products.index')}}"
                             title="My Wishlists">
                             <i class="header-icon-wishlist"></i>
                         </a>
